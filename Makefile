@@ -13,6 +13,14 @@ SRCS = $(wildcard $(SRCDIR)/*.cpp)
 OBJS = $(SRCS:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 TARGET = $(BINDIR)/trabalho_comunicacao
 
+IS_NIXOS := $(shell grep -qi nixos /etc/os-release && echo 1 || echo 0)
+
+ifeq ($(IS_NIXOS),1)
+    RUN_CMD = ./$(TARGET)
+else
+    RUN_CMD = nixGL ./$(TARGET)
+endif
+
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
@@ -24,7 +32,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 	$(CXX) $(CXXFLAGS) $(RELEASEFLAGS) -c $< -o $@
 
 run: $(TARGET)
-	./$(TARGET)
+	$(RUN_CMD)
 
 debug: RELEASEFLAGS = $(DEBUGFLAGS)
 debug: clean $(TARGET)
