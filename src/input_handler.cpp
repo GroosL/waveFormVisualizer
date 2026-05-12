@@ -28,7 +28,9 @@ void InputHandler::handleMenuInput(SDL_Event &e, std::vector<Cell> &grid,
   }
 
   if (e.type == SDL_EVENT_TEXT_INPUT && input.ativo) {
-    input.text += e.text.text;
+    if ((e.text.text[0] == '0' || e.text.text[0] == '1') && input.text.length() < 12) {
+      input.text += e.text.text;
+    }
   }
 
   if (e.type == SDL_EVENT_KEY_DOWN && input.ativo) {
