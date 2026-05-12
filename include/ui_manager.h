@@ -19,7 +19,8 @@ public:
                       const std::vector<Cell> &grid, const InputBox &input,
                       const Button &next);
   void drawWaveformScreen(SDL_Renderer *renderer, TTF_Font *font,
-                          const std::string &waveformBits);
+                          const std::string &waveformBits,
+                          const std::string &waveformName);
   std::string getOpcao(int index);
 };
 

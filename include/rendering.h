@@ -14,4 +14,13 @@ void desenharTextoCentralizado(SDL_Renderer *renderer, TTF_Font *font,
 void drawNRZL(SDL_Renderer *renderer, TTF_Font *font,
               const std::string &bits);
 
+void drawNRZI(SDL_Renderer *renderer, TTF_Font *font,
+              const std::string &bits);
+
+void drawAMI(SDL_Renderer *renderer, TTF_Font *font,
+             const std::string &bits);
+
+void drawPseudoTernary(SDL_Renderer *renderer, TTF_Font *font,
+                       const std::string &bits);
+
 #endif // RENDERING_H

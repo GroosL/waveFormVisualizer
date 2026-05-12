@@ -30,6 +30,7 @@ int main() {
 
   Screen screen = SCREEN_MENU;
   std::string waveformBits;
+  std::string selectedWaveform;
 
   SDL_StartTextInput(window);
 
@@ -40,11 +41,17 @@ int main() {
     SDL_Event e;
 
     while (SDL_PollEvent(&e)) {
-      if (e.type == SDL_EVENT_QUIT)
+      if (e.type == SDL_EVENT_QUIT || (e.type == SDL_EVENT_KEY_DOWN && e.key.key == SDLK_Q))
         running = false;
 
       if (screen == SCREEN_MENU) {
         inputHandler.handleMenuInput(e, grid, input, selecionadoIndex);
+        
+        if (e.type == SDL_EVENT_KEY_DOWN && e.key.key == SDLK_RETURN) {
+          waveformBits = input.text;
+          selectedWaveform = uiManager.getOpcao(selecionadoIndex);
+          screen = SCREEN_WAVEFORM;
+        }
 
         // Check Next button
         if (e.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
@@ -52,8 +59,9 @@ int main() {
           float my = e.button.y;
 
           if (pontoNoRetangulo(mx, my, next.rect)) {
-            if (selecionadoIndex == 1) { // NRZ-L
+            if (selecionadoIndex >= 0 && selecionadoIndex <= 3) {
               waveformBits = input.text;
+              selectedWaveform = uiManager.getOpcao(selecionadoIndex);
               screen = SCREEN_WAVEFORM;
             }
           }
@@ -69,7 +77,8 @@ int main() {
     if (screen == SCREEN_MENU) {
       uiManager.drawMenuScreen(renderer, font, grid, input, next);
     } else if (screen == SCREEN_WAVEFORM) {
-      uiManager.drawWaveformScreen(renderer, font, waveformBits);
+      uiManager.drawWaveformScreen(renderer, font, waveformBits,
+                                   selectedWaveform);
     }
 
     SDL_RenderPresent(renderer);
