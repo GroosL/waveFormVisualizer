@@ -46,7 +46,7 @@ int main() {
 
       if (screen == SCREEN_MENU) {
         inputHandler.handleMenuInput(e, grid, input, selecionadoIndex);
-        
+
         if (e.type == SDL_EVENT_KEY_DOWN && e.key.key == SDLK_RETURN) {
           waveformBits = input.text;
           selectedWaveform = uiManager.getOpcao(selecionadoIndex);
@@ -59,7 +59,7 @@ int main() {
           float my = e.button.y;
 
           if (pontoNoRetangulo(mx, my, next.rect)) {
-            if (selecionadoIndex >= 0 && selecionadoIndex <= 3) {
+            if (selecionadoIndex >= 0 && selecionadoIndex <= 4) {
               waveformBits = input.text;
               selectedWaveform = uiManager.getOpcao(selecionadoIndex);
               screen = SCREEN_WAVEFORM;

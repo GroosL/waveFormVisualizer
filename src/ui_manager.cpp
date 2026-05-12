@@ -73,8 +73,10 @@ void UIManager::drawWaveformScreen(SDL_Renderer *renderer, TTF_Font *font,
     drawAMI(renderer, font, waveformBits);
   } else if (waveformName == "Pseudoternario") {
     drawPseudoTernary(renderer, font, waveformBits);
-  } else {
+  } else if (waveformName == "NRZ-L") {
     drawNRZL(renderer, font, waveformBits);
+  } else if (waveformName == "Manchester") {
+    drawManchester(renderer, font, waveformBits);
   }
 
   SDL_FRect top = {0, 20, 800, 40};

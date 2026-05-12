@@ -23,4 +23,7 @@ void drawAMI(SDL_Renderer *renderer, TTF_Font *font,
 void drawPseudoTernary(SDL_Renderer *renderer, TTF_Font *font,
                        const std::string &bits);
 
+void drawManchester(SDL_Renderer *renderer, TTF_Font *font,
+                    const std::string &bits);
+
 #endif // RENDERING_H
