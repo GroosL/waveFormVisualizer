@@ -1,11 +1,11 @@
 #include "../include/rendering.h"
 
-constexpr float START_X = 50.0f;
-constexpr float CENTER_Y = 300.0f;
-constexpr float BIT_WIDTH = 60.0f;
-constexpr float BIT_AMPLITUDE = 60.0f;
-constexpr float HIGH_Y = (CENTER_Y - BIT_AMPLITUDE);
-constexpr float LOW_Y = (CENTER_Y + BIT_AMPLITUDE);
+constexpr float START_X {50.0f};
+constexpr float CENTER_Y {300.0f};
+constexpr float BIT_WIDTH {60.0f};
+constexpr float BIT_AMPLITUDE {60.0f};
+constexpr float HIGH_Y {CENTER_Y - BIT_AMPLITUDE};
+constexpr float LOW_Y {CENTER_Y + BIT_AMPLITUDE};
 
 enum class SignalLevel { High, Zero, Low };
 
