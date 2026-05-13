@@ -27,8 +27,8 @@ void drawWaveGrid(SDL_Renderer *renderer, const std::string &bits,
                   float lowY) {
   SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255);
 
-  for (int i = 0; i <= (int)bits.size(); i++) {
-    float x = startX + i * bitWidth;
+  for (size_t i = 0; i <= bits.size(); i++) {
+    float x {startX + i * bitWidth};
     SDL_RenderLine(renderer, x, highY - 20, x, lowY + 20);
   }
 
@@ -41,9 +41,9 @@ void drawWaveGrid(SDL_Renderer *renderer, const std::string &bits,
 void drawBitLabels(SDL_Renderer *renderer, TTF_Font *font,
                    const std::string &bits, float startX, float bitWidth,
                    float bottomTextY) {
-  float x = startX;
+  float x {startX};
 
-  for (int i = 0; i < (int)bits.size(); i++) {
+  for (size_t i = 0; i < bits.size(); i++) {
     SDL_FRect textRect = {x, bottomTextY, bitWidth, 30};
     std::string bitStr(1, bits[i]);
     drawCenteredText(renderer, font, bitStr, textRect);
@@ -54,16 +54,15 @@ void drawBitLabels(SDL_Renderer *renderer, TTF_Font *font,
 SDL_Texture *renderText(SDL_Renderer *renderer, TTF_Font *font,
                         const std::string &text) {
   SDL_Color color = {0, 0, 0, 255};
-  SDL_Surface *surf =
-      TTF_RenderText_Blended(font, text.c_str(), text.size(), color);
-  SDL_Texture *tex = SDL_CreateTextureFromSurface(renderer, surf);
+  SDL_Surface *surf {TTF_RenderText_Blended(font, text.c_str(), text.size(), color)};
+  SDL_Texture *tex {SDL_CreateTextureFromSurface(renderer, surf)};
   SDL_DestroySurface(surf);
   return tex;
 }
 
 void drawCenteredText(SDL_Renderer *renderer, TTF_Font *font,
                                const std::string &text, SDL_FRect rect) {
-  SDL_Texture *tex = renderText(renderer, font, text);
+  SDL_Texture *tex {renderText(renderer, font, text)};
 
   float w, h;
   SDL_GetTextureSize(tex, &w, &h);
@@ -85,7 +84,7 @@ void drawWaveInterface(SDL_Renderer *renderer, TTF_Font *font, const std::string
 
 void drawNRZL(SDL_Renderer *renderer, TTF_Font *font,
               const std::string &bits) {
-  float x = START_X;
+  float x {START_X};
 
   drawWaveInterface(renderer, font, bits);
 
@@ -109,7 +108,7 @@ void drawNRZL(SDL_Renderer *renderer, TTF_Font *font,
 
 void drawNRZI(SDL_Renderer *renderer, TTF_Font *font,
               const std::string &bits) {
-  float x = START_X;
+  float x {START_X};
 
   drawWaveInterface(renderer, font, bits);
 
@@ -137,7 +136,7 @@ void drawNRZI(SDL_Renderer *renderer, TTF_Font *font,
 }
 
 void drawAMI(SDL_Renderer *renderer, TTF_Font *font, const std::string &bits) {
-  float x = START_X;
+  float x {START_X};
 
   drawWaveInterface(renderer, font, bits);
 
@@ -167,7 +166,7 @@ void drawAMI(SDL_Renderer *renderer, TTF_Font *font, const std::string &bits) {
 
 void drawPseudoTernary(SDL_Renderer *renderer, TTF_Font *font,
                        const std::string &bits) {
-  float x = START_X;
+  float x {START_X};
 
   drawWaveInterface(renderer, font, bits);
 
@@ -196,7 +195,7 @@ void drawPseudoTernary(SDL_Renderer *renderer, TTF_Font *font,
 }
 
 void drawManchester(SDL_Renderer *renderer, TTF_Font *font, const std::string &bits) {
-    float x = START_X;
+    float x {START_X};
 
     drawWaveInterface(renderer, font, bits);
 
@@ -225,7 +224,7 @@ void drawManchester(SDL_Renderer *renderer, TTF_Font *font, const std::string &b
 }
 
 void drawManchesterDiff(SDL_Renderer *renderer, TTF_Font *font, const std::string &bits) {
-    float x = START_X;
+    float x {START_X};
 
     drawWaveInterface(renderer, font, bits);
 

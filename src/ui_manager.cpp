@@ -2,14 +2,14 @@
 #include "../include/rendering.h"
 
 void UIManager::initializeGrid(std::vector<Cell> &grid) {
-  int cols = 3, rows = 3;
-  float cellW = 180, cellH = 110;
-  float spacing = 10;
+  constexpr short cols {3}, rows {3};
+  constexpr float cellW {180}, cellH {110};
+  constexpr float spacing {10};
 
-  float totalW = cols * cellW + (cols - 1) * spacing;
+  constexpr float totalW {cols * cellW + (cols - 1) * spacing};
 
-  float startX = (800 - totalW) / 2.0f;
-  float startY = 60;
+  constexpr float startX {(800 - totalW) / 2.0f};
+  constexpr float startY {60};
 
   for (int y = 0; y < rows; y++) {
     for (int x = 0; x < cols; x++) {
@@ -27,7 +27,7 @@ void UIManager::drawMenuScreen(SDL_Renderer *renderer, TTF_Font *font,
   drawCenteredText(renderer, font, "Q para fechar",
                             topInstruction);
 
-  for (int i = 0; i < (int)grid.size(); i++) {
+  for (size_t i = 0; i < grid.size(); i++) {
     auto &c = grid[i];
 
     if (c.selecionado)
