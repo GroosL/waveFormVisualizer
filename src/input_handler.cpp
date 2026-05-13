@@ -1,8 +1,11 @@
 #include "../include/input_handler.h"
 #include "../include/geometry.h"
 
+#include <algorithm>
+
 void InputHandler::handleMenuInput(SDL_Event &e, std::vector<Cell> &grid,
-                                   InputBox &input, int &selecionadoIndex) {
+                                   InputBox &input,
+                                   std::vector<int> &selecionados) {
   if (e.type == SDL_EVENT_MOUSE_MOTION) {
     float mx {e.motion.x};
     float my {e.motion.y};
@@ -15,12 +18,19 @@ void InputHandler::handleMenuInput(SDL_Event &e, std::vector<Cell> &grid,
     float mx {e.button.x};
     float my {e.button.y};
 
-    for (int i = 0; i < (int)grid.size(); i++) {
+    for (size_t i = 0; i < grid.size(); i++) {
       if (pontoNoRetangulo(mx, my, grid[i].rect)) {
-        selecionadoIndex = i;
-        for (auto &c : grid)
-          c.selecionado = false;
-        grid[i].selecionado = true;
+        auto it = std::find(selecionados.begin(), selecionados.end(), i);
+
+        if (it != selecionados.end()) {
+          grid[i].selecionado = false;
+          selecionados.erase(it);
+        } else if (selecionados.size() < 2) {
+          grid[i].selecionado = true;
+          selecionados.push_back(i);
+        }
+
+        break;
       }
     }
 

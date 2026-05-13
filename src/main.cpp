@@ -31,12 +31,23 @@ int main() {
 
   Screen screen {SCREEN_MENU};
   std::string waveformBits{};
-  std::string selectedWaveform{};
+  std::vector<std::string> selectedWaveforms{};
 
   SDL_StartTextInput(window);
 
-  int selecionadoIndex {-1};
+  std::vector<int> selecionados;
   bool running {true};
+
+  auto abrirWaveforms = [&]() {
+    if (!selecionados.empty() && selecionados.size() <= 2) {
+      waveformBits = input.text;
+      selectedWaveforms.clear();
+      for (int selecionado : selecionados) {
+        selectedWaveforms.push_back(uiManager.getOpcao(selecionado));
+      }
+      screen = SCREEN_WAVEFORM;
+    }
+  };
 
   while (running) {
     SDL_Event e;
@@ -46,12 +57,10 @@ int main() {
         running = false;
 
       if (screen == SCREEN_MENU) {
-        inputHandler.handleMenuInput(e, grid, input, selecionadoIndex);
+        inputHandler.handleMenuInput(e, grid, input, selecionados);
 
         if (e.type == SDL_EVENT_KEY_DOWN && e.key.key == SDLK_RETURN) {
-          waveformBits = input.text;
-          selectedWaveform = uiManager.getOpcao(selecionadoIndex);
-          screen = SCREEN_WAVEFORM;
+          abrirWaveforms();
         }
 
         // Check Next button
@@ -60,11 +69,7 @@ int main() {
           float my {e.button.y};
 
           if (pontoNoRetangulo(mx, my, next.rect)) {
-            if (selecionadoIndex >= 0 && selecionadoIndex <= 5) {
-              waveformBits = input.text;
-              selectedWaveform = uiManager.getOpcao(selecionadoIndex);
-              screen = SCREEN_WAVEFORM;
-            }
+            abrirWaveforms();
           }
         }
       } else if (screen == SCREEN_WAVEFORM) {
@@ -79,7 +84,7 @@ int main() {
       uiManager.drawMenuScreen(renderer, font, grid, input, next);
     } else if (screen == SCREEN_WAVEFORM) {
       uiManager.drawWaveformScreen(renderer, font, waveformBits,
-                                   selectedWaveform);
+                                   selectedWaveforms);
     }
 
     SDL_RenderPresent(renderer);

@@ -66,24 +66,41 @@ void UIManager::drawMenuScreen(SDL_Renderer *renderer, TTF_Font *font,
 
 void UIManager::drawWaveformScreen(SDL_Renderer *renderer, TTF_Font *font,
                                    const std::string &waveformBits,
-                                   const std::string &waveformName) {
-  if (waveformName == "NRZ-I") {
-    drawNRZI(renderer, font, waveformBits);
-  } else if (waveformName == "AMI") {
-    drawAMI(renderer, font, waveformBits);
-  } else if (waveformName == "Pseudoternario") {
-    drawPseudoTernary(renderer, font, waveformBits);
-  } else if (waveformName == "NRZ-L") {
-    drawNRZL(renderer, font, waveformBits);
-  } else if (waveformName == "Manchester") {
-    drawManchester(renderer, font, waveformBits);
-  } else if (waveformName == "Manchester Dif.") {
-      drawManchesterDiff(renderer, font, waveformBits);
+                                   const std::vector<std::string> &waveformNames) {
+  auto drawWaveform = [&](const std::string &waveformName, float centerY) {
+    if (waveformName == "NRZ-I") {
+      drawNRZI(renderer, font, waveformBits, centerY);
+    } else if (waveformName == "AMI") {
+      drawAMI(renderer, font, waveformBits, centerY);
+    } else if (waveformName == "Pseudoternario") {
+      drawPseudoTernary(renderer, font, waveformBits, centerY);
+    } else if (waveformName == "NRZ-L") {
+      drawNRZL(renderer, font, waveformBits, centerY);
+    } else if (waveformName == "Manchester") {
+      drawManchester(renderer, font, waveformBits, centerY);
+    } else if (waveformName == "Manchester Dif.") {
+      drawManchesterDiff(renderer, font, waveformBits, centerY);
+    }
+  };
+
+  if (waveformNames.size() >= 2) {
+    SDL_FRect topLabel = {0, 50, 800, 24};
+    SDL_FRect bottomLabel = {0, 300, 800, 24};
+
+    drawCenteredText(renderer, font, waveformNames[0], topLabel);
+    drawCenteredText(renderer, font, waveformNames[1], bottomLabel);
+
+    drawWaveform(waveformNames[0], 180.0f);
+    drawWaveform(waveformNames[1], 420.0f);
+  } else if (waveformNames.size() == 1) {
+    SDL_FRect topLabel = {0, 50, 800, 24};
+    drawCenteredText(renderer, font, waveformNames[0], topLabel);
+    drawWaveform(waveformNames[0], 300.0f);
   }
 
   SDL_FRect top = {0, 20, 800, 40};
-  std::string title = waveformName.empty() ? "NRZ-L" : waveformName;
-  drawCenteredText(renderer, font, title + " (ESC para voltar)", top);
+  drawCenteredText(renderer, font, "Pressione ESC para voltar",
+                            top);
 }
 
 std::string UIManager::getOpcao(int index) {

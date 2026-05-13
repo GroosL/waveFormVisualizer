@@ -20,7 +20,7 @@ public:
                       const Button &next);
   void drawWaveformScreen(SDL_Renderer *renderer, TTF_Font *font,
                           const std::string &waveformBits,
-                          const std::string &waveformName);
+                          const std::vector<std::string> &waveformNames);
   std::string getOpcao(int index);
 };
 

@@ -8,7 +8,7 @@
 class InputHandler {
 public:
   void handleMenuInput(SDL_Event &e, std::vector<Cell> &grid,
-                       InputBox &input, int &selecionadoIndex);
+                       InputBox &input, std::vector<int> &selecionados);
 
   void handleWaveformInput(SDL_Event &e, Screen &screen);
 };

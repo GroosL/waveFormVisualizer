@@ -1,11 +1,8 @@
 #include "../include/rendering.h"
 
 constexpr float START_X {50.0f};
-constexpr float CENTER_Y {300.0f};
 constexpr float BIT_WIDTH {60.0f};
 constexpr float BIT_AMPLITUDE {60.0f};
-constexpr float HIGH_Y {CENTER_Y - BIT_AMPLITUDE};
-constexpr float LOW_Y {CENTER_Y + BIT_AMPLITUDE};
 
 enum class SignalLevel { High, Zero, Low };
 
@@ -19,7 +16,7 @@ float levelY(SignalLevel level, float highY, float centerY, float lowY) {
     return lowY;
   }
 
-  return CENTER_Y;
+  return centerY;
 }
 
 void drawWaveGrid(SDL_Renderer *renderer, const std::string &bits,
@@ -74,27 +71,32 @@ void drawCenteredText(SDL_Renderer *renderer, TTF_Font *font,
   SDL_DestroyTexture(tex);
 }
 
-void drawWaveInterface(SDL_Renderer *renderer, TTF_Font *font, const std::string &bits) {
-    float bottomTextY = CENTER_Y + 100;
+void drawWaveInterface(SDL_Renderer *renderer, TTF_Font *font,
+                       const std::string &bits, float centerY) {
+    float highY {centerY - BIT_AMPLITUDE};
+    float lowY {centerY + BIT_AMPLITUDE};
+    float bottomTextY = centerY + 100;
 
-    drawWaveGrid(renderer, bits, START_X, BIT_WIDTH, CENTER_Y, HIGH_Y, LOW_Y);
+    drawWaveGrid(renderer, bits, START_X, BIT_WIDTH, centerY, highY, lowY);
 
     drawBitLabels(renderer, font, bits, START_X, BIT_WIDTH, bottomTextY);
 }
 
 void drawNRZL(SDL_Renderer *renderer, TTF_Font *font,
-              const std::string &bits) {
+              const std::string &bits, float centerY) {
   float x {START_X};
 
-  drawWaveInterface(renderer, font, bits);
+  drawWaveInterface(renderer, font, bits, centerY);
 
   SignalLevel previousLevel = SignalLevel::Low;
+  float highY {centerY - BIT_AMPLITUDE};
+  float lowY {centerY + BIT_AMPLITUDE};
 
   for (size_t i = 0; i < bits.size(); i++) {
     SignalLevel currentLevel = bits[i] == '1' ? SignalLevel::High
                                               : SignalLevel::Low;
-    float previousY = levelY(previousLevel, HIGH_Y, CENTER_Y, LOW_Y);
-    float currentY = levelY(currentLevel, HIGH_Y, CENTER_Y, LOW_Y);
+    float previousY = levelY(previousLevel, highY, centerY, lowY);
+    float currentY = levelY(currentLevel, highY, centerY, lowY);
 
     if (i == 0 || currentLevel != previousLevel) {
       SDL_RenderLine(renderer, x, previousY, x, currentY);
@@ -107,12 +109,14 @@ void drawNRZL(SDL_Renderer *renderer, TTF_Font *font,
 }
 
 void drawNRZI(SDL_Renderer *renderer, TTF_Font *font,
-              const std::string &bits) {
+              const std::string &bits, float centerY) {
   float x {START_X};
 
-  drawWaveInterface(renderer, font, bits);
+  drawWaveInterface(renderer, font, bits, centerY);
 
   SignalLevel previousLevel = SignalLevel::Low;
+  float highY {centerY - BIT_AMPLITUDE};
+  float lowY {centerY + BIT_AMPLITUDE};
 
   for (size_t i = 0; i < bits.size(); i++) {
     SignalLevel currentLevel = previousLevel;
@@ -122,8 +126,8 @@ void drawNRZI(SDL_Renderer *renderer, TTF_Font *font,
                                                            : SignalLevel::High;
     }
 
-    float previousY = levelY(previousLevel, HIGH_Y, CENTER_Y, LOW_Y);
-    float currentY = levelY(currentLevel, HIGH_Y, CENTER_Y, LOW_Y);
+    float previousY = levelY(previousLevel, highY, centerY, lowY);
+    float currentY = levelY(currentLevel, highY, centerY, lowY);
 
     if (i == 0 || currentLevel != previousLevel) {
       SDL_RenderLine(renderer, x, previousY, x, currentY);
@@ -135,13 +139,20 @@ void drawNRZI(SDL_Renderer *renderer, TTF_Font *font,
   }
 }
 
-void drawAMI(SDL_Renderer *renderer, TTF_Font *font, const std::string &bits) {
+void drawAMI(SDL_Renderer *renderer, TTF_Font *font, const std::string &bits,
+             float centerY) {
   float x {START_X};
 
-  drawWaveInterface(renderer, font, bits);
+  drawWaveInterface(renderer, font, bits, centerY);
+
+  if (bits.empty()) {
+    return;
+  }
 
   SignalLevel previousLevel = SignalLevel::Zero;
   bool nextPulseHigh = true;
+  float highY {centerY - BIT_AMPLITUDE};
+  float lowY {centerY + BIT_AMPLITUDE};
 
   for (size_t i = 0; i < bits.size(); i++) {
     SignalLevel currentLevel = SignalLevel::Zero;
@@ -151,8 +162,8 @@ void drawAMI(SDL_Renderer *renderer, TTF_Font *font, const std::string &bits) {
       nextPulseHigh = !nextPulseHigh;
     }
 
-    float previousY = levelY(previousLevel, HIGH_Y, CENTER_Y, LOW_Y);
-    float currentY = levelY(currentLevel, HIGH_Y, CENTER_Y, LOW_Y);
+    float previousY = levelY(previousLevel, highY, centerY, lowY);
+    float currentY = levelY(currentLevel, highY, centerY, lowY);
 
     if (i == 0 || currentLevel != previousLevel) {
       SDL_RenderLine(renderer, x, previousY, x, currentY);
@@ -165,13 +176,19 @@ void drawAMI(SDL_Renderer *renderer, TTF_Font *font, const std::string &bits) {
 }
 
 void drawPseudoTernary(SDL_Renderer *renderer, TTF_Font *font,
-                       const std::string &bits) {
+                       const std::string &bits, float centerY) {
   float x {START_X};
 
-  drawWaveInterface(renderer, font, bits);
+  drawWaveInterface(renderer, font, bits, centerY);
+
+  if (bits.empty()) {
+    return;
+  }
 
   SignalLevel previousLevel = SignalLevel::Zero;
   bool nextPulseHigh = true;
+  float highY {centerY - BIT_AMPLITUDE};
+  float lowY {centerY + BIT_AMPLITUDE};
 
   for (size_t i = 0; i < bits.size(); i++) {
     SignalLevel currentLevel = SignalLevel::Zero;
@@ -181,8 +198,8 @@ void drawPseudoTernary(SDL_Renderer *renderer, TTF_Font *font,
       nextPulseHigh = !nextPulseHigh;
     }
 
-    float previousY = levelY(previousLevel, HIGH_Y, CENTER_Y, LOW_Y);
-    float currentY = levelY(currentLevel, HIGH_Y, CENTER_Y, LOW_Y);
+    float previousY = levelY(previousLevel, highY, centerY, lowY);
+    float currentY = levelY(currentLevel, highY, centerY, lowY);
 
     if (i == 0 || currentLevel != previousLevel) {
       SDL_RenderLine(renderer, x, previousY, x, currentY);
@@ -194,59 +211,75 @@ void drawPseudoTernary(SDL_Renderer *renderer, TTF_Font *font,
   }
 }
 
-void drawManchester(SDL_Renderer *renderer, TTF_Font *font, const std::string &bits) {
+void drawManchester(SDL_Renderer *renderer, TTF_Font *font,
+                    const std::string &bits, float centerY) {
     float x {START_X};
 
-    drawWaveInterface(renderer, font, bits);
+    drawWaveInterface(renderer, font, bits, centerY);
+
+    if (bits.empty()) {
+      return;
+    }
+
+    float highY {centerY - BIT_AMPLITUDE};
+    float lowY {centerY + BIT_AMPLITUDE};
 
     SignalLevel previousLevel = bits[0] == '1' ? SignalLevel::Low : SignalLevel::High;
 
     for (size_t i = 0; i < bits.size(); i++) {
         SignalLevel currentLevel = bits[i] == '1' ? SignalLevel::High : SignalLevel::Low;
 
-        SDL_RenderLine(renderer, x + BIT_WIDTH/2, LOW_Y, x + BIT_WIDTH/2, HIGH_Y);
+        SDL_RenderLine(renderer, x + BIT_WIDTH/2, lowY, x + BIT_WIDTH/2, highY);
 
         if (previousLevel == currentLevel) {
-            SDL_RenderLine(renderer, x, LOW_Y, x, HIGH_Y);
+            SDL_RenderLine(renderer, x, lowY, x, highY);
         }
 
         if (currentLevel == SignalLevel::High) {
-          SDL_RenderLine(renderer, x, LOW_Y, x + BIT_WIDTH/2, LOW_Y);
-          SDL_RenderLine(renderer, x + BIT_WIDTH/2, HIGH_Y, x + BIT_WIDTH, HIGH_Y);
+          SDL_RenderLine(renderer, x, lowY, x + BIT_WIDTH/2, lowY);
+          SDL_RenderLine(renderer, x + BIT_WIDTH/2, highY, x + BIT_WIDTH, highY);
         }
         if (currentLevel == SignalLevel::Low) {
-            SDL_RenderLine(renderer, x, HIGH_Y, x + BIT_WIDTH/2, HIGH_Y);
-            SDL_RenderLine(renderer, x + BIT_WIDTH/2, LOW_Y, x + BIT_WIDTH, LOW_Y);
+            SDL_RenderLine(renderer, x, highY, x + BIT_WIDTH/2, highY);
+            SDL_RenderLine(renderer, x + BIT_WIDTH/2, lowY, x + BIT_WIDTH, lowY);
         }
         previousLevel = currentLevel;
         x += BIT_WIDTH;
     }
 }
 
-void drawManchesterDiff(SDL_Renderer *renderer, TTF_Font *font, const std::string &bits) {
+void drawManchesterDiff(SDL_Renderer *renderer, TTF_Font *font,
+                        const std::string &bits, float centerY) {
     float x {START_X};
 
-    drawWaveInterface(renderer, font, bits);
+    drawWaveInterface(renderer, font, bits, centerY);
+
+    if (bits.empty()) {
+      return;
+    }
+
+    float highY {centerY - BIT_AMPLITUDE};
+    float lowY {centerY + BIT_AMPLITUDE};
 
     SignalLevel previousLevel = bits[0] == '1' ? SignalLevel::Low : SignalLevel::High;
 
     for (size_t i = 0; i < bits.size(); i++) {
         SignalLevel currentLevel = bits[i] == '0' ? previousLevel : previousLevel == SignalLevel::High ? SignalLevel::Low : SignalLevel::High;
 
-        SDL_RenderLine(renderer, x + BIT_WIDTH/2, LOW_Y, x + BIT_WIDTH/2, HIGH_Y);
+        SDL_RenderLine(renderer, x + BIT_WIDTH/2, lowY, x + BIT_WIDTH/2, highY);
 
         if (bits[i] == '0') {
-            SDL_RenderLine(renderer, x, LOW_Y, x, HIGH_Y);
+          SDL_RenderLine(renderer, x, lowY, x, highY);
         }
 
         if (currentLevel == SignalLevel::High) {
-            SDL_RenderLine(renderer, x, LOW_Y, x + BIT_WIDTH/2, LOW_Y);
-            SDL_RenderLine(renderer, x + BIT_WIDTH/2, HIGH_Y, x + BIT_WIDTH, HIGH_Y);
+          SDL_RenderLine(renderer, x, lowY, x + BIT_WIDTH/2, lowY);
+          SDL_RenderLine(renderer, x + BIT_WIDTH/2, highY, x + BIT_WIDTH, highY);
         }
 
         if (currentLevel == SignalLevel::Low) {
-            SDL_RenderLine(renderer, x, HIGH_Y, x + BIT_WIDTH/2, HIGH_Y);
-            SDL_RenderLine(renderer, x + BIT_WIDTH/2, LOW_Y, x + BIT_WIDTH, LOW_Y);
+          SDL_RenderLine(renderer, x, highY, x + BIT_WIDTH/2, highY);
+          SDL_RenderLine(renderer, x + BIT_WIDTH/2, lowY, x + BIT_WIDTH, lowY);
         }
 
         previousLevel = currentLevel;
