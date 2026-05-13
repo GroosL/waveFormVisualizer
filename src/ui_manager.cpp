@@ -77,6 +77,8 @@ void UIManager::drawWaveformScreen(SDL_Renderer *renderer, TTF_Font *font,
     drawNRZL(renderer, font, waveformBits);
   } else if (waveformName == "Manchester") {
     drawManchester(renderer, font, waveformBits);
+  } else if (waveformName == "Manchester Dif.") {
+      drawManchesterDiff(renderer, font, waveformBits);
   }
 
   SDL_FRect top = {0, 20, 800, 40};

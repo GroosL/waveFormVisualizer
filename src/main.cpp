@@ -59,7 +59,7 @@ int main() {
           float my = e.button.y;
 
           if (pontoNoRetangulo(mx, my, next.rect)) {
-            if (selecionadoIndex >= 0 && selecionadoIndex <= 4) {
+            if (selecionadoIndex >= 0 && selecionadoIndex <= 5) {
               waveformBits = input.text;
               selectedWaveform = uiManager.getOpcao(selecionadoIndex);
               screen = SCREEN_WAVEFORM;

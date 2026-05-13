@@ -26,4 +26,7 @@ void drawPseudoTernary(SDL_Renderer *renderer, TTF_Font *font,
 void drawManchester(SDL_Renderer *renderer, TTF_Font *font,
                     const std::string &bits);
 
+void drawManchesterDiff(SDL_Renderer *renderer, TTF_Font *font,
+                        const std::string &bits);
+
 #endif // RENDERING_H

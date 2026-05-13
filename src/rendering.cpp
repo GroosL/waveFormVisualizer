@@ -233,7 +233,6 @@ void drawManchester(SDL_Renderer *renderer, TTF_Font *font, const std::string &b
     for (size_t i = 0; i < bits.size(); i++) {
         SignalLevel currentLevel = bits[i] == '1' ? SignalLevel::High : SignalLevel::Low;
 
-        // Desenha a linha vertical
         SDL_RenderLine(renderer, x + bitWidth/2, lowY, x + bitWidth/2, highY);
 
         if (previousLevel == currentLevel) {
@@ -248,6 +247,46 @@ void drawManchester(SDL_Renderer *renderer, TTF_Font *font, const std::string &b
             SDL_RenderLine(renderer, x, highY, x + bitWidth/2, highY);
             SDL_RenderLine(renderer, x + bitWidth/2, lowY, x + bitWidth, lowY);
         }
+        previousLevel = currentLevel;
+        x += bitWidth;
+    }
+
+    drawBitLabels(renderer, font, bits, startX, bitWidth, bottomTextY);
+}
+
+void drawManchesterDiff(SDL_Renderer *renderer, TTF_Font *font, const std::string &bits) {
+    float startX = 50;
+    float centerY = 300;
+
+    float bitWidth = 60;
+    float highY = centerY - 60;
+    float lowY = centerY + 60;
+    float bottomTextY = centerY + 100;
+
+    drawWaveGrid(renderer, bits, startX, bitWidth, centerY, highY, lowY);
+
+    SignalLevel previousLevel = bits[0] == '1' ? SignalLevel::Low : SignalLevel::High;
+    float x = startX;
+
+    for (size_t i = 0; i < bits.size(); i++) {
+        SignalLevel currentLevel = bits[i] == '0' ? previousLevel : previousLevel == SignalLevel::High ? SignalLevel::Low : SignalLevel::High;
+
+        SDL_RenderLine(renderer, x + bitWidth/2, lowY, x + bitWidth/2, highY);
+
+        if (currentLevel == SignalLevel::High) {
+            SDL_RenderLine(renderer, x, lowY, x + bitWidth/2, lowY);
+            SDL_RenderLine(renderer, x + bitWidth/2, highY, x + bitWidth, highY);
+        }
+
+        if (currentLevel == SignalLevel::Low) {
+            SDL_RenderLine(renderer, x, highY, x + bitWidth/2, highY);
+            SDL_RenderLine(renderer, x + bitWidth/2, lowY, x + bitWidth, lowY);
+        }
+
+        if (bits[i] == '0') {
+            SDL_RenderLine(renderer, x, lowY, x, highY);
+        }
+
         previousLevel = currentLevel;
         x += bitWidth;
     }
