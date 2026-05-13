@@ -4,16 +4,16 @@
 void InputHandler::handleMenuInput(SDL_Event &e, std::vector<Cell> &grid,
                                    InputBox &input, int &selecionadoIndex) {
   if (e.type == SDL_EVENT_MOUSE_MOTION) {
-    float mx = e.motion.x;
-    float my = e.motion.y;
+    float mx {e.motion.x};
+    float my {e.motion.y};
 
     for (auto &c : grid)
       c.hover = pontoNoRetangulo(mx, my, c.rect);
   }
 
   if (e.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
-    float mx = e.button.x;
-    float my = e.button.y;
+    float mx {e.button.x};
+    float my {e.button.y};
 
     for (int i = 0; i < (int)grid.size(); i++) {
       if (pontoNoRetangulo(mx, my, grid[i].rect)) {

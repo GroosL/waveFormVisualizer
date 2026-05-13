@@ -9,14 +9,13 @@ int main() {
   SDL_Init(SDL_INIT_VIDEO);
   TTF_Init();
 
-  int w = 800;
-  int h = 600;
+  constexpr int w{800};
+  constexpr int h{600};
 
-  SDL_Window *window =
-      SDL_CreateWindow("Trabalho Comunicacao de Dados", w, h, 0); // O tamanho pra caber 16 bits tem q ser 1060x600
-  SDL_Renderer *renderer = SDL_CreateRenderer(window, NULL);
+  SDL_Window *window {SDL_CreateWindow("Trabalho Comunicacao de Dados", w, h, 0)}; // O tamanho pra caber 16 bits tem q ser 1060x600
+  SDL_Renderer *renderer {SDL_CreateRenderer(window, NULL)};
 
-  TTF_Font *font = TTF_OpenFont("NotoSerif.ttf", 20);
+  TTF_Font *font {TTF_OpenFont("NotoSerif.ttf", 20)};
 
   // Initialize UI components
   UIManager uiManager;
@@ -25,19 +24,19 @@ int main() {
   std::vector<Cell> grid;
   uiManager.initializeGrid(grid);
 
-  float gridBottom = h * 0.68333f; // Based on grid calculation
+  constexpr float gridBottom{h * 0.68333f}; // Based on grid calculation
 
   InputBox input = {{(w * 0.625f) / 2.0f, gridBottom + h * 0.06666f, w * 0.375f, 40}, ""};
   Button next = {{(w * 0.85f) / 2.0f, gridBottom + h * 0.16666f, w * 0.15f, 50}, "Proximo"};
 
-  Screen screen = SCREEN_MENU;
-  std::string waveformBits;
-  std::string selectedWaveform;
+  Screen screen {SCREEN_MENU};
+  std::string waveformBits{};
+  std::string selectedWaveform{};
 
   SDL_StartTextInput(window);
 
-  int selecionadoIndex = -1;
-  bool running = true;
+  int selecionadoIndex {-1};
+  bool running {true};
 
   while (running) {
     SDL_Event e;
@@ -57,8 +56,8 @@ int main() {
 
         // Check Next button
         if (e.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
-          float mx = e.button.x;
-          float my = e.button.y;
+          float mx {e.button.x};
+          float my {e.button.y};
 
           if (pontoNoRetangulo(mx, my, next.rect)) {
             if (selecionadoIndex >= 0 && selecionadoIndex <= 5) {

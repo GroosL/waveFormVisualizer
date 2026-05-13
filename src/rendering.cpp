@@ -20,8 +20,8 @@ void drawWaveGrid(SDL_Renderer *renderer, const std::string &bits,
                   float lowY) {
   SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255);
 
-  for (int i = 0; i <= (int)bits.size(); i++) {
-    float x = startX + i * bitWidth;
+  for (size_t i = 0; i <= bits.size(); i++) {
+    float x {startX + i * bitWidth};
     SDL_RenderLine(renderer, x, highY - 20, x, lowY + 20);
   }
 
@@ -34,9 +34,9 @@ void drawWaveGrid(SDL_Renderer *renderer, const std::string &bits,
 void drawBitLabels(SDL_Renderer *renderer, TTF_Font *font,
                    const std::string &bits, float startX, float bitWidth,
                    float bottomTextY) {
-  float x = startX;
+  float x {startX};
 
-  for (int i = 0; i < (int)bits.size(); i++) {
+  for (size_t i = 0; i < bits.size(); i++) {
     SDL_FRect textRect = {x, bottomTextY, bitWidth, 30};
     std::string bitStr(1, bits[i]);
     desenharTextoCentralizado(renderer, font, bitStr, textRect);
@@ -47,16 +47,15 @@ void drawBitLabels(SDL_Renderer *renderer, TTF_Font *font,
 SDL_Texture *renderText(SDL_Renderer *renderer, TTF_Font *font,
                         const std::string &text) {
   SDL_Color color = {0, 0, 0, 255};
-  SDL_Surface *surf =
-      TTF_RenderText_Blended(font, text.c_str(), text.size(), color);
-  SDL_Texture *tex = SDL_CreateTextureFromSurface(renderer, surf);
+  SDL_Surface *surf {TTF_RenderText_Blended(font, text.c_str(), text.size(), color)};
+  SDL_Texture *tex {SDL_CreateTextureFromSurface(renderer, surf)};
   SDL_DestroySurface(surf);
   return tex;
 }
 
 void desenharTextoCentralizado(SDL_Renderer *renderer, TTF_Font *font,
                                const std::string &text, SDL_FRect rect) {
-  SDL_Texture *tex = renderText(renderer, font, text);
+  SDL_Texture *tex {renderText(renderer, font, text)};
 
   float w, h;
   SDL_GetTextureSize(tex, &w, &h);
@@ -70,12 +69,12 @@ void desenharTextoCentralizado(SDL_Renderer *renderer, TTF_Font *font,
 
 void drawNRZL(SDL_Renderer *renderer, TTF_Font *font,
               const std::string &bits) {
-  float startX = 50;
-  float centerY = 300;
+  float startX {50};
+  float centerY {300};
 
-  float bitWidth = 60;
-  float highY = centerY - 60;
-  float lowY = centerY + 60;
+  float bitWidth {60};
+  float highY {centerY - 60};
+  float lowY {centerY + 60};
   float bottomTextY = centerY + 100;
 
   drawWaveGrid(renderer, bits, startX, bitWidth, centerY, highY, lowY);
@@ -103,18 +102,18 @@ void drawNRZL(SDL_Renderer *renderer, TTF_Font *font,
 
 void drawNRZI(SDL_Renderer *renderer, TTF_Font *font,
               const std::string &bits) {
-  float startX = 50;
-  float centerY = 300;
+  float startX {50};
+  float centerY {300};
 
-  float bitWidth = 60;
-  float highY = centerY - 60;
-  float lowY = centerY + 60;
-  float bottomTextY = centerY + 100;
+  float bitWidth {60};
+  float highY {centerY - 60};
+  float lowY {centerY + 60};
+  float bottomTextY {centerY + 100};
 
   drawWaveGrid(renderer, bits, startX, bitWidth, centerY, highY, lowY);
 
-  SignalLevel previousLevel = SignalLevel::Low;
-  float x = startX;
+  SignalLevel previousLevel {SignalLevel::Low};
+  float x {startX};
 
   for (size_t i = 0; i < bits.size(); i++) {
     SignalLevel currentLevel = previousLevel;
@@ -140,19 +139,19 @@ void drawNRZI(SDL_Renderer *renderer, TTF_Font *font,
 }
 
 void drawAMI(SDL_Renderer *renderer, TTF_Font *font, const std::string &bits) {
-  float startX = 50;
-  float centerY = 300;
+  float startX {50};
+  float centerY {300};
 
-  float bitWidth = 60;
-  float highY = centerY - 60;
-  float lowY = centerY + 60;
-  float bottomTextY = centerY + 100;
+  float bitWidth {60};
+  float highY {centerY - 60};
+  float lowY {centerY + 60};
+  float bottomTextY {centerY + 100};
 
   drawWaveGrid(renderer, bits, startX, bitWidth, centerY, highY, lowY);
 
   SignalLevel previousLevel = SignalLevel::Zero;
-  bool nextPulseHigh = true;
-  float x = startX;
+  bool nextPulseHigh {true};
+  float x {startX};
 
   for (size_t i = 0; i < bits.size(); i++) {
     SignalLevel currentLevel = SignalLevel::Zero;
@@ -179,19 +178,19 @@ void drawAMI(SDL_Renderer *renderer, TTF_Font *font, const std::string &bits) {
 
 void drawPseudoTernary(SDL_Renderer *renderer, TTF_Font *font,
                        const std::string &bits) {
-  float startX = 50;
-  float centerY = 300;
+  float startX {50};
+  float centerY {300};
 
-  float bitWidth = 60;
-  float highY = centerY - 60;
-  float lowY = centerY + 60;
-  float bottomTextY = centerY + 100;
+  float bitWidth {60};
+  float highY {centerY - 60};
+  float lowY {centerY + 60};
+  float bottomTextY {centerY + 100};
 
   drawWaveGrid(renderer, bits, startX, bitWidth, centerY, highY, lowY);
 
   SignalLevel previousLevel = SignalLevel::Zero;
-  bool nextPulseHigh = true;
-  float x = startX;
+  bool nextPulseHigh {true};
+  float x {startX};
 
   for (size_t i = 0; i < bits.size(); i++) {
     SignalLevel currentLevel = SignalLevel::Zero;
@@ -217,18 +216,18 @@ void drawPseudoTernary(SDL_Renderer *renderer, TTF_Font *font,
 }
 
 void drawManchester(SDL_Renderer *renderer, TTF_Font *font, const std::string &bits) {
-    float startX = 50;
-    float centerY = 300;
+    float startX {50};
+    float centerY {300};
 
-    float bitWidth = 60;
-    float highY = centerY - 60;
-    float lowY = centerY + 60;
-    float bottomTextY = centerY + 100;
+    float bitWidth {60};
+    float highY {centerY - 60};
+    float lowY {centerY + 60};
+    float bottomTextY {centerY + 100};
 
     drawWaveGrid(renderer, bits, startX, bitWidth, centerY, highY, lowY);
 
     SignalLevel previousLevel = bits[0] == '1' ? SignalLevel::Low : SignalLevel::High;
-    float x = startX;
+    float x {startX};
 
     for (size_t i = 0; i < bits.size(); i++) {
         SignalLevel currentLevel = bits[i] == '1' ? SignalLevel::High : SignalLevel::Low;
@@ -255,18 +254,18 @@ void drawManchester(SDL_Renderer *renderer, TTF_Font *font, const std::string &b
 }
 
 void drawManchesterDiff(SDL_Renderer *renderer, TTF_Font *font, const std::string &bits) {
-    float startX = 50;
-    float centerY = 300;
+    float startX {50};
+    float centerY {300};
 
-    float bitWidth = 60;
-    float highY = centerY - 60;
-    float lowY = centerY + 60;
-    float bottomTextY = centerY + 100;
+    float bitWidth {60};
+    float highY {centerY - 60};
+    float lowY {centerY + 60};
+    float bottomTextY {centerY + 100};
 
     drawWaveGrid(renderer, bits, startX, bitWidth, centerY, highY, lowY);
 
     SignalLevel previousLevel = bits[0] == '1' ? SignalLevel::Low : SignalLevel::High;
-    float x = startX;
+    float x {startX};
 
     for (size_t i = 0; i < bits.size(); i++) {
         SignalLevel currentLevel = bits[i] == '0' ? previousLevel : previousLevel == SignalLevel::High ? SignalLevel::Low : SignalLevel::High;
