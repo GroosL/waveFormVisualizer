@@ -8,7 +8,7 @@
 SDL_Texture *renderText(SDL_Renderer *renderer, TTF_Font *font,
                         const std::string &text);
 
-void desenharTextoCentralizado(SDL_Renderer *renderer, TTF_Font *font,
+void drawCenteredText(SDL_Renderer *renderer, TTF_Font *font,
                                const std::string &text, SDL_FRect rect);
 
 void drawNRZL(SDL_Renderer *renderer, TTF_Font *font,

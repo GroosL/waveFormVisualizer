@@ -24,7 +24,7 @@ void UIManager::drawMenuScreen(SDL_Renderer *renderer, TTF_Font *font,
                                const std::vector<Cell> &grid,
                                const InputBox &input, const Button &next) {
   SDL_FRect topInstruction = {0, 12, 800, 32};
-  desenharTextoCentralizado(renderer, font, "Q para fechar",
+  drawCenteredText(renderer, font, "Q para fechar",
                             topInstruction);
 
   for (int i = 0; i < (int)grid.size(); i++) {
@@ -42,7 +42,7 @@ void UIManager::drawMenuScreen(SDL_Renderer *renderer, TTF_Font *font,
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderRect(renderer, &c.rect);
 
-    desenharTextoCentralizado(renderer, font, opcoes[i], c.rect);
+    drawCenteredText(renderer, font, opcoes[i], c.rect);
   }
 
   SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
@@ -51,7 +51,7 @@ void UIManager::drawMenuScreen(SDL_Renderer *renderer, TTF_Font *font,
   SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
   SDL_RenderRect(renderer, &input.rect);
 
-  desenharTextoCentralizado(
+  drawCenteredText(
       renderer, font, input.text.empty() ? "INSERIR STRING" : input.text,
       input.rect);
 
@@ -61,7 +61,7 @@ void UIManager::drawMenuScreen(SDL_Renderer *renderer, TTF_Font *font,
   SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
   SDL_RenderRect(renderer, &next.rect);
 
-  desenharTextoCentralizado(renderer, font, next.text, next.rect);
+  drawCenteredText(renderer, font, next.text, next.rect);
 }
 
 void UIManager::drawWaveformScreen(SDL_Renderer *renderer, TTF_Font *font,
@@ -83,7 +83,7 @@ void UIManager::drawWaveformScreen(SDL_Renderer *renderer, TTF_Font *font,
 
   SDL_FRect top = {0, 20, 800, 40};
   std::string title = waveformName.empty() ? "NRZ-L" : waveformName;
-  desenharTextoCentralizado(renderer, font, title + " (ESC para voltar)", top);
+  drawCenteredText(renderer, font, title + " (ESC para voltar)", top);
 }
 
 std::string UIManager::getOpcao(int index) {
