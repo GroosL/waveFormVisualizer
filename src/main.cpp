@@ -1,5 +1,6 @@
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
+#include "constants.h"
 #include "types.h"
 #include "ui_manager.h"
 #include "input_handler.h"
@@ -9,10 +10,7 @@ int main() {
   SDL_Init(SDL_INIT_VIDEO);
   TTF_Init();
 
-  constexpr int w{800};
-  constexpr int h{600};
-
-  SDL_Window *window {SDL_CreateWindow("Trabalho Comunicacao de Dados", w, h, 0)}; // O tamanho pra caber 16 bits tem q ser 1060x600
+  SDL_Window *window {SDL_CreateWindow("Trabalho Comunicacao de Dados", WINDOW_W, WINDOW_H, 0)}; // O tamanho pra caber 16 bits tem q ser 1060x600
   SDL_Renderer *renderer {SDL_CreateRenderer(window, NULL)};
 
   TTF_Font *font {TTF_OpenFont("NotoSerif.ttf", 20)};
@@ -24,10 +22,10 @@ int main() {
   std::vector<Cell> grid;
   uiManager.initializeGrid(grid);
 
-  constexpr float gridBottom {60 + 3 * 110 + 2 * 10}; // Based on grid calculation
+  constexpr float gridBottom {WINDOW_H * 0.6833333f}; // Based on grid calculation
 
-  InputBox input = {{(800 - 300) / 2.0f, gridBottom + 40, 300, 40}, ""};
-  Button next = {{(800 - 120) / 2.0f, gridBottom + 100, 120, 50}, "Proximo"};
+  InputBox input = {{(WINDOW_W - 300) / 2.0f, gridBottom + WINDOW_H * 0.0666666f, 300, 40}, ""};
+  Button next = {{(WINDOW_W - 120) / 2.0f, gridBottom + WINDOW_H * 0.1666666f, 120, 50}, "Proximo"};
 
   Screen screen {SCREEN_MENU};
   std::string waveformBits{};

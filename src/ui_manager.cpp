@@ -1,5 +1,6 @@
 #include "../include/ui_manager.h"
 #include "../include/rendering.h"
+#include "constants.h"
 
 void UIManager::initializeGrid(std::vector<Cell> &grid) {
   constexpr short cols {3}, rows {3};
@@ -8,8 +9,8 @@ void UIManager::initializeGrid(std::vector<Cell> &grid) {
 
   constexpr float totalW {cols * cellW + (cols - 1) * spacing};
 
-  constexpr float startX {(800 - totalW) / 2.0f};
-  constexpr float startY {60};
+  constexpr float startX {(WINDOW_W - totalW) / 2.0f};
+  constexpr float startY {WINDOW_H * 0.1f};
 
   for (int y = 0; y < rows; y++) {
     for (int x = 0; x < cols; x++) {
@@ -23,7 +24,7 @@ void UIManager::initializeGrid(std::vector<Cell> &grid) {
 void UIManager::drawMenuScreen(SDL_Renderer *renderer, TTF_Font *font,
                                const std::vector<Cell> &grid,
                                const InputBox &input, const Button &next) {
-  SDL_FRect topInstruction = {0, 12, 800, 32};
+  SDL_FRect topInstruction = {(WINDOW_W - 100) / 2.0f, WINDOW_H * 0.02f, 100, 32};
   drawCenteredText(renderer, font, "Q para fechar",
                             topInstruction);
 
@@ -84,8 +85,8 @@ void UIManager::drawWaveformScreen(SDL_Renderer *renderer, TTF_Font *font,
   };
 
   if (waveformNames.size() >= 2) {
-    SDL_FRect topLabel = {0, 50, 800, 24};
-    SDL_FRect bottomLabel = {0, 300, 800, 24};
+    SDL_FRect topLabel = {(WINDOW_W - 300) / 2.0f, WINDOW_H * 0.0625, 300, 24};
+    SDL_FRect bottomLabel = {(WINDOW_W - 300) / 2.0f, WINDOW_H * 0.375, 300, 24};
 
     drawCenteredText(renderer, font, waveformNames[0], topLabel);
     drawCenteredText(renderer, font, waveformNames[1], bottomLabel);
@@ -93,12 +94,12 @@ void UIManager::drawWaveformScreen(SDL_Renderer *renderer, TTF_Font *font,
     drawWaveform(waveformNames[0], 180.0f);
     drawWaveform(waveformNames[1], 420.0f);
   } else if (waveformNames.size() == 1) {
-    SDL_FRect topLabel = {0, 50, 800, 24};
+    SDL_FRect topLabel = {(WINDOW_W - 300) / 2.0f, WINDOW_H * 0.0625, 300, 24};
     drawCenteredText(renderer, font, waveformNames[0], topLabel);
     drawWaveform(waveformNames[0], 300.0f);
   }
 
-  SDL_FRect top = {0, 20, 800, 40};
+  SDL_FRect top = {(WINDOW_W - 300) / 2.0f, WINDOW_H * 0.025, 300, 40};
   drawCenteredText(renderer, font, "Pressione ESC para voltar",
                             top);
 }
